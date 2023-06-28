@@ -12,10 +12,10 @@ const getUsers = (req, res) => {
     .then((users) => {
       res.send(users);
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
     });
-}
+};
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
@@ -29,7 +29,7 @@ const createUser = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 const getUser = (req, res) => {
   const { id } = req.params;
   User.findById(id)
@@ -47,7 +47,7 @@ const getUser = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 
 const updateUserProfile = (req, res) => {
   const id = req.user._id;
@@ -67,11 +67,11 @@ const updateUserProfile = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 const updateUserAvatar = (req, res) => {
   const id = req.user._id;
-  const avatar = req.body.avatar;
-  User.findByIdAndUpdate(id, avatar, { new: true })
+  const { avatar } = req.body;
+  User.findByIdAndUpdate(id, { avatar }, { new: true })
     .then((user) => {
       if (!user) {
         res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
@@ -86,11 +86,11 @@ const updateUserAvatar = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 module.exports = {
   getUsers,
   createUser,
   getUser,
   updateUserProfile,
-  updateUserAvatar
-}
+  updateUserAvatar,
+};
