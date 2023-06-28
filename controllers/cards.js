@@ -12,7 +12,7 @@ const getCards = (req, res) => {
     .then((cards) => {
       res.send(cards);
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
     });
 };
@@ -30,7 +30,7 @@ const createCard = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 const deleteCard = (req, res) => {
   const { id } = req.params;
   Card.deleteOne({ id })
@@ -48,7 +48,7 @@ const deleteCard = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 
 const likeCard = (req, res) => {
   const id = req.params.cardId;
@@ -67,7 +67,7 @@ const likeCard = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 
 const dislikeCard = (req, res) => {
   const id = req.params.cardId;
@@ -86,7 +86,7 @@ const dislikeCard = (req, res) => {
         res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
       }
     });
-}
+};
 
 module.exports = {
   getCards,
@@ -94,4 +94,4 @@ module.exports = {
   deleteCard,
   likeCard,
   dislikeCard
-}
+};
