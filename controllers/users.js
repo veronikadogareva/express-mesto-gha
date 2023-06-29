@@ -50,8 +50,9 @@ const getUser = (req, res) => {
 };
 
 const updateUserData = (req, res, updateData) => {
+  const id = req.user._id;
   User.findByIdAndUpdate(
-    req.user._id,
+    id,
     updateData,
     {
       new: true,
@@ -59,7 +60,7 @@ const updateUserData = (req, res, updateData) => {
     },
   )
     .then((user) => {
-        res.send(user);
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -72,7 +73,18 @@ const updateUserData = (req, res, updateData) => {
 
 const updateUserProfile = (req, res) => {
   const { name, about } = req.body;
-  updateUserData(req, res, { name, about });
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true, },)
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+      } else {
+        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+      }
+    });
+  // updateUserData(req, res, { name, about });
 };
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
