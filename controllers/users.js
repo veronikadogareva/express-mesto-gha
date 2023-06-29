@@ -64,7 +64,6 @@ const updateUserData = (req, res, updateData) => {
       } else {
         res.send(user);
       }
-
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
