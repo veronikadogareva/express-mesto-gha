@@ -59,11 +59,7 @@ const updateUserData = (req, res, updateData) => {
     },
   )
     .then((user) => {
-      if (!user) {
-        res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
-      } else {
         res.send(user);
-      }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
