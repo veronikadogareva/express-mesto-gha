@@ -22,7 +22,5 @@ app.use((req, res, next) => {
 });
 app.use(bodyParser.json());
 app.use('/users', usersRouter);
-
-
 app.use('/cards', cardsRouter);
 app.listen(3000);
