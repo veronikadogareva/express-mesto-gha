@@ -48,32 +48,9 @@ const getUser = (req, res) => {
       }
     });
 };
-
-const updateUserData = (req, res, updateData) => {
-  const id = req.user._id;
-  User.findByIdAndUpdate(
-    id,
-    updateData,
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
-      } else {
-        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
-      }
-    });
-};
-
 const updateUserProfile = (req, res) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true, },)
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true, })
     .then((user) => {
       if (!user) {
         res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
@@ -91,7 +68,7 @@ const updateUserProfile = (req, res) => {
 };
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true, },)
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true, })
     .then((user) => {
       if (!user) {
         res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
