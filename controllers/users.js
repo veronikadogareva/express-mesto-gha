@@ -91,7 +91,21 @@ const updateUserProfile = (req, res) => {
 };
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  updateUserData(req, res, { avatar });
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true, },)
+    .then((user) => {
+      if (!user) {
+        res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
+      } else {
+        res.send(user);
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+      } else {
+        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+      }
+    });
 };
 module.exports = {
   getUsers,
