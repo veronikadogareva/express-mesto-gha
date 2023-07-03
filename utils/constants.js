@@ -12,4 +12,3 @@ module.exports = {
   ERROR_DEFAULT,
   MESSAGE_ERROR_DEFAULT,
 };
-
