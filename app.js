@@ -5,10 +5,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
+const helmet = require('helmet');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(bodyParser.json());
+app.use(helmet())
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use('/', (req, res) => {
