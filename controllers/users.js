@@ -6,14 +6,14 @@ const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.send(users);
     })
     .catch(next);
 };
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => User.create({
       email: req.body.email,
@@ -35,7 +35,7 @@ const createUser = (req, res) => {
       }
     });
 };
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { id } = req.params;
   User.findById(id)
     .then((user) => {
@@ -53,7 +53,7 @@ const getUser = (req, res) => {
       }
     });
 };
-const getUserInfo = (req, res) => {
+const getUserInfo = (req, res, next) => {
   const userId = req.user._id;
   User.findById(userId)
     .then((user) => {
@@ -71,7 +71,7 @@ const getUserInfo = (req, res) => {
       }
     });
 }
-const updateUserProfile = (req, res) => {
+const updateUserProfile = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
@@ -89,7 +89,7 @@ const updateUserProfile = (req, res) => {
       }
     });
 };
-const updateUserAvatar = (req, res) => {
+const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
@@ -107,7 +107,7 @@ const updateUserAvatar = (req, res) => {
       }
     });
 };
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findOne({ email }).select('+password')
   .then((user) => {
