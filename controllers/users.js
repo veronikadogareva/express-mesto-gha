@@ -110,21 +110,17 @@ const updateUserAvatar = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
   return User.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        next(new BadRequestError('Пользователь с данным email не найден.'));
-      }
-      bcrypt.compare(password, user.password, (err, matched) => {
-        if (!matched) next(UnauthorizedError('Пароль указан неверно.'));
-        const token = jwt.sign({ _id: user._id }, 'secretKey', { expiresIn: '7d' });
-        res.status(200).res
-        .cookie('jwt', token, {
-          httpOnly: true
-        })
-        .end();
-      });
-    })
-    .catch(next)
+  .then((user) => {
+    if (!user) throw new UnauthorizedError('Неправильные почта или пароль');
+    dataBaseUser = user;
+    return bcrypt.compare(password, dataBaseUser.password);
+  })
+  .then((isValidPassword) => {
+    if (!isValidPassword) throw new UnauthorizedError('Неправильные почта или пароль');
+    const token = jwt.sign({ _id: dataBaseUser._id }, 'secret-key', { expiresIn: '7d' });
+    return res.status(200).send({ token });
+  })
+  .catch(next);
 };
 module.exports = {
   getUsers,
