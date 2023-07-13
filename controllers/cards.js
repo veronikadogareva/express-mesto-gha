@@ -1,21 +1,13 @@
 const Card = require('../models/card');
-const {
-  ERROR_BAD_REQUEST,
-  MESSAGE_ERROR_BAD_REQUEST,
-  ERROR_NOT_FOUND,
-  MESSAGE_ERROR_NOT_FOUND,
-  ERROR_DEFAULT,
-  MESSAGE_ERROR_DEFAULT,
-} = require('../utils/constants');
+const BadRequestError = require('../errors/BadRequestError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const getCards = (req, res) => {
   Card.find({})
     .then((cards) => {
       res.send(cards);
     })
-    .catch(() => {
-      res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
-    });
+    .catch(next);
 };
 const createCard = (req, res) => {
   const { name, link } = req.body;
@@ -26,9 +18,9 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
-        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+        next(err);
       }
     });
 };
@@ -37,16 +29,16 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(id)
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
+        next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
       } else {
         res.send(card);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
-        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+        next(err);
       }
     });
 };
@@ -56,16 +48,16 @@ const likeCard = (req, res) => {
   Card.findByIdAndUpdate(id, { $addToSet: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
+        next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
       } else {
         res.send(card);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
-        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+        next(err);
       }
     });
 };
@@ -75,16 +67,16 @@ const dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(id, { $pull: { likes: req.user._id } }, { new: true })
     .then((card) => {
       if (!card) {
-        res.status(ERROR_NOT_FOUND).send(MESSAGE_ERROR_NOT_FOUND);
+        next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
       } else {
         res.send(card);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_BAD_REQUEST).send(MESSAGE_ERROR_BAD_REQUEST);
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
-        res.status(ERROR_DEFAULT).send(MESSAGE_ERROR_DEFAULT);
+        next(err);
       }
     });
 };
