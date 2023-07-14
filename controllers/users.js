@@ -59,8 +59,8 @@ const getUser = (req, res, next) => {
     });
 };
 const getUserInfo = (req, res, next) => {
-  const userId = req.user._id;
-  User.findById(userId)
+  const {id} = req.params;
+  User.findById(id)
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным идентификатором не найден.'));
@@ -70,7 +70,7 @@ const getUserInfo = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
         next(err);
       }
@@ -88,7 +88,7 @@ const updateUserProfile = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
         next(err);
       }
@@ -106,7 +106,7 @@ const updateUserAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
         next(err);
       }
