@@ -23,7 +23,7 @@ const createUser = (req, res, next) => {
       avatar: req.body.avatar,
     }))
     .then((user) => {
-      res.status(201).send({ message: `Пользователь ${req.body.email} успешно зарегестрирован.` });
+      res.status(201).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
