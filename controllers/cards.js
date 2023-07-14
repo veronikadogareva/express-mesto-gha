@@ -31,10 +31,10 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
       }
-      if (req.user._id === !card.owner.toString()) {
-        next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
+      if (req.user._id === card.owner.toString()) {
+        return res.send(card);
       }
-      res.send(card);
+      next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
