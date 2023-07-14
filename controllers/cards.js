@@ -36,6 +36,9 @@ const deleteCard = (req, res, next) => {
       }
       next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
     })
+    .then((card) => {
+      res.send(card);
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));

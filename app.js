@@ -1,16 +1,24 @@
-const express = require('express');
 const app = express();
+const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const {login, createUser} = require('./controllers/users');
-const {createUserValidation, loginValidation} = require('./middlewares/validate');
-const auth = require('./middlewares/auth');
 const { errors } = require('celebrate');
+const {
+  login,
+  createUser,
+} = require('./controllers/users');
+const {
+  createUserValidation,
+  loginValidation,
+} = require('./middlewares/validate');
+const auth = require('./middlewares/auth');
+
 const error = require('./middlewares/error');
+
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
 mongoose.connect(DB_URL, {
