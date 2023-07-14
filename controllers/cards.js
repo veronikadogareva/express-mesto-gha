@@ -26,8 +26,7 @@ const createCard = (req, res, next) => {
     });
 };
 const deleteCard = (req, res, next) => {
-  const id = req.params.cardId;
-  Card.findByIdAndRemove(id)
+  Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
         next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
