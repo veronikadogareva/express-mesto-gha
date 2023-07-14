@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const {login, createUser} = require('./controllers/users');
+const {createUserValidation, loginValidation} = require('./middlewares/validate');
 const auth = require('./middlewares/auth');
 const { errors } = require('celebrate');
 const error = require('./middlewares/error');
@@ -20,8 +21,8 @@ mongoose.connect(DB_URL, {
 app.use(bodyParser.json());
 app.use(helmet());
 app.use(cookieParser());
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', loginValidation, login);
+app.post('/signup', createUserValidation, createUser);
 app.use(auth);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
