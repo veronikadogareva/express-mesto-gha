@@ -65,7 +65,7 @@ const getUserInfo = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным идентификатором не найден.'));
       } else {
-        res.status(201).send(user);
+        res.status(200).send(user);
       }
     })
     .catch((err) => {
