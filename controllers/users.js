@@ -23,7 +23,12 @@ const createUser = (req, res, next) => {
       avatar: req.body.avatar,
     }))
     .then((user) => {
-      res.status(201).send(user);
+      res.status(201).send({
+        email: req.body.email,
+        name: req.body.name,
+        about: req.body.about,
+        avatar: req.body.avatar,
+      });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -110,17 +115,21 @@ const updateUserAvatar = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findOne({ email }).select('+password')
-  .then((user) => {
-    if (!user) throw new UnauthorizedError('Неправильные почта или пароль');
-    dataBaseUser = user;
-    return bcrypt.compare(password, dataBaseUser.password);
-  })
-  .then((isValidPassword) => {
-    if (!isValidPassword) throw new UnauthorizedError('Неправильные почта или пароль');
-    const token = jwt.sign({ _id: dataBaseUser._id }, 'secret-key', { expiresIn: '7d' });
-    return res.status(200).send({ token });
-  })
-  .catch(next);
+    .then((user) => {
+      if (!user) throw new UnauthorizedError('Неправильные почта или пароль');
+      dataBaseUser = user;
+      return bcrypt.compare(password, dataBaseUser.password);
+    })
+    .then((isValidPassword) => {
+      if (!isValidPassword) throw new UnauthorizedError('Неправильные почта или пароль');
+      const token = jwt.sign({ _id: dataBaseUser._id }, 'secret-key', { expiresIn: '7d' });
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: true,
+      }).send({ token });
+    })
+    .catch(next);
 };
 module.exports = {
   getUsers,
