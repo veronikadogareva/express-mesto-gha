@@ -52,7 +52,7 @@ const getUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
+        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
         next(err);
       }
