@@ -9,7 +9,7 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
-      res.send(users);
+      res.send({ data: users });
     })
     .catch(next);
 };
@@ -59,8 +59,7 @@ const getUser = (req, res, next) => {
     });
 };
 const getUserInfo = (req, res, next) => {
-  const {id} = req.params;
-  User.findById(id)
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным идентификатором не найден.'));
