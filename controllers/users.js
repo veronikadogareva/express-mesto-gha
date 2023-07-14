@@ -64,16 +64,16 @@ const getUserInfo = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь с указанным идентификатором не найден.'));
       } else {
-        res.status(200).send(user);
+        res.status(200).send({
+          _id: user._id,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
+          email: user.email,
+        });
       }
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 }
 const updateUserProfile = (req, res, next) => {
   const { name, about } = req.body;
