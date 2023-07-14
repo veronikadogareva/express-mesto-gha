@@ -22,7 +22,7 @@ const createUser = (req, res, next) => {
       about: req.body.about,
       avatar: req.body.avatar,
     }))
-    .then((user) => {
+    .then(() => {
       res.status(201).send({
         email: req.body.email,
         name: req.body.name,
