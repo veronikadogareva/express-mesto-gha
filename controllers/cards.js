@@ -39,9 +39,8 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
-      } else {
-        return next(err);
       }
+      return next(err);
     });
 };
 
