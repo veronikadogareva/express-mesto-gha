@@ -29,18 +29,18 @@ const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
+        return next(new NotFoundError('Карточка с указанным идентификатором не найдена.'));
       }
       if (req.user._id === card.owner.toString()) {
         return res.send(card);
       }
-      next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
+      return next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
+        return next(new BadRequestError('Неверный запрос. Пожалуйста, проверьте введенные данные и повторите запрос.'));
       } else {
-        next(err);
+        return next(err);
       }
     });
 };
