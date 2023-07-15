@@ -37,7 +37,7 @@ const deleteCard = (req, res, next) => {
       next(new ProhibitionError('Вы можете удалять только собственные карточки.'));
     })
     .then((card) => {
-      res.send(card);
+      return res.send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
