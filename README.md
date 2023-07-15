@@ -1,16 +1,22 @@
-[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
+# Название проекта
+Mesto Russia(бэкенд)
 
+# Описание проекта
+Бэкэнд для проекта Mesto. Написан на JS на Node.js с помощью фреймворка Express. Реализовано подключение к базе данных Mongo DB и обработка данных.
 
-## Директории
-
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
+## Используемые технологии
+*Node.js 
+*express
+*mongoose
+*body-parser
+*MongoDB
+*helmet
+*cookie-parser
+*celebrate
 
 ## Запуск проекта
-
 `npm run start` — запускает сервер   
 `npm run dev` — запускает сервер с hot-reload
+
+## Ссылка на  GitHub Pages
+https://veronikadogareva.github.io/express-mesto-gha/
