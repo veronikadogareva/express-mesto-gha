@@ -117,7 +117,7 @@ const login = (req, res, next) => {
   return User.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) throw new UnauthorizedError('Неправильные почта или пароль');
-      dataBaseUser = user;
+      const dataBaseUser = user;
       return bcrypt.compare(password, dataBaseUser.password);
     })
     .then((isValidPassword) => {
